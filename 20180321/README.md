@@ -1,6 +1,6 @@
 python main.py
 
-###Example output:
+###Example output: </br>
 Performing: 100 runs </br>
 5000 of elements from range (1, 10000) </br>
 Brute force: Per run: 3766.52us </br>
