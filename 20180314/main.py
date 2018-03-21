@@ -27,8 +27,6 @@ def one_go(input, k):
 
     while j > 0 and copy_input[j] > k:
         j -= 1
-    if j == 0:
-        return False
 
     while i < j:
         front_el = copy_input[i]
@@ -41,7 +39,7 @@ def one_go(input, k):
         elif front_el + back_el < k:
             i += 1
 
-    return False 
+    return False
 
 def kosa_try(input, k):
     s = set()
