@@ -32,9 +32,9 @@ def one_go(input, k):
         added = front_el + back_el
         if added == k:
             return True
-        if front_el + back_el > k:
+        if added > k:
             j -= 1
-        elif front_el + back_el < k:
+        else:
             i += 1
 
     return False
