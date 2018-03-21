@@ -8,9 +8,7 @@
 def brute_force(input, k):
     input_length = len(input)
     for i in range(0, input_length):
-        for j in range(0, input_length):
-            if i == j:
-                continue
+        for j in range(i+1, input_length):
             if input[i] + input[j] == k:
                 return True
     return False
@@ -41,7 +39,7 @@ def one_go(input, k):
 
     return False
 
-def kosa_try(input, k):
+def kosa_try_set(input, k):
     s = set()
     for i in input:
         if k - i in s:
@@ -57,77 +55,37 @@ def kosa_try_dict(input, k):
         s[i] = ""
     return False
 
-def main():
+def benchmark(method, name, runs, input, k):
     from datetime import datetime
+    start_time = datetime.now()
+    for i in range(0, runs):
+        output=method(input, k)
+    time_elapsed = datetime.now() - start_time
+
+    per_run = (time_elapsed.microseconds/(runs * 1.0))
+    print str(name) + ": Per run: " + str(per_run) + "us"
+
+    if output:
+        print str(name) + ": Found a pair"
+    else:
+        print str(name) + ": Pair not found"
+
+
+def main():
     import random
-
-
-    input = [10, 15, 3, 7]
-    k = 17
 
     max_range = 10000
     input = random.sample(range(1, max_range), max_range/2)
     k = random.randint(1, max_range)
-
     runs = 100
     print "Performing: " + str(runs) + " runs"
+
     print str(max_range/2) + " of elements from range (1, " + str(max_range) + ")"
 
-    start_time = datetime.now()
-    for i in range(0, runs):
-        output=brute_force(input, k)
-    time_elapsed = datetime.now() - start_time
-
-    per_run = (time_elapsed.microseconds/(runs * 1.0))
-    print "Brute force: Per run: " + str(per_run) + "us"
-
-    if output:
-        print "Brute force: Yup"
-        #print "Given input " + str(input) + " has at least two elements adding up to: " + str(k)
-    else:
-        print "Brute force: Nope"
-
-    start_time = datetime.now()
-    for i in range(0, runs):
-        output=one_go(input, k)
-    time_elapsed = datetime.now() - start_time
-
-    per_run = (time_elapsed.microseconds/(runs * 1.0))
-    print "One go: Per run: " + str(per_run) + "us"
-
-    if output:
-        print "One go: Yup"
-        #print "Given input " + str(input) + " has at least two elements adding up to: " + str(k)
-    else:
-        print "One go: Nope"
-
-    start_time = datetime.now()
-    for i in range(0, runs):
-        output=kosa_try(input, k)
-    time_elapsed = datetime.now() - start_time
-
-    per_run = (time_elapsed.microseconds/(runs * 1.0))
-    print "Kosa try: Per run: " + str(per_run) + "us"
-
-    if output:
-        print "Kosa try: Yup"
-        #print "Given input " + str(input) + " has at least two elements adding up to: " + str(k)
-    else:
-        print "Kosa try: Nope"
-
-    start_time = datetime.now()
-    for i in range(0, runs):
-        output=kosa_try_dict(input, k)
-    time_elapsed = datetime.now() - start_time
-
-    per_run = (time_elapsed.microseconds/(runs * 1.0))
-    print "Kosa try dict: Per run: " + str(per_run) + "us"
-
-    if output:
-        print "Kosa try dict: Yup"
-        #print "Given input " + str(input) + " has at least two elements adding up to: " + str(k)
-    else:
-        print "Kosa try dict: Nope"
+    benchmark(brute_force,   "Brute force", runs, input, k)
+    benchmark(one_go,        "One go", runs, input, k)
+    benchmark(kosa_try_set,  "Kosa try set", runs, input, k)
+    benchmark(kosa_try_dict, "Kosa try dict", runs, input, k)
 
 if __name__ == "__main__":
     main()
