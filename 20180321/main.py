@@ -14,11 +14,10 @@ def brute_force(input, k):
     return False
 
 def one_go(input, k):
-    input_length = len(input)
-    copy_input = input[:]
+    copy_input = input[:] #https://stackoverflow.com/a/2612990
     copy_input.sort()
     i = 0
-    j = input_length - 1
+    j = len(input) - 1
 
     if copy_input[i] > k:
         return False
@@ -27,9 +26,7 @@ def one_go(input, k):
         j -= 1
 
     while i < j:
-        front_el = copy_input[i]
-        back_el = copy_input[j]
-        added = front_el + back_el
+        added = copy_input[i] + copy_input[j]
         if added == k:
             return True
         if added > k:
