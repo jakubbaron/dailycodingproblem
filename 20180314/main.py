@@ -49,6 +49,14 @@ def kosa_try(input, k):
         s.add(i)
     return False
 
+def kosa_try_dict(input, k):
+    s = {}
+    for i in input:
+        if k - i in s:
+            return True
+        s[i] = ""
+    return False
+
 def main():
     from datetime import datetime
     import random
@@ -106,6 +114,20 @@ def main():
         #print "Given input " + str(input) + " has at least two elements adding up to: " + str(k)
     else:
         print "Kosa try: Nope"
+
+    start_time = datetime.now()
+    for i in range(0, runs):
+        output=kosa_try_dict(input, k)
+    time_elapsed = datetime.now() - start_time
+
+    per_run = (time_elapsed.microseconds/(runs * 1.0))
+    print "Kosa try dict: Per run: " + str(per_run) + "us"
+
+    if output:
+        print "Kosa try dict: Yup"
+        #print "Given input " + str(input) + " has at least two elements adding up to: " + str(k)
+    else:
+        print "Kosa try dict: Nope"
 
 if __name__ == "__main__":
     main()
