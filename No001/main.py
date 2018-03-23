@@ -53,13 +53,14 @@ def kosa_try_dict(input, k):
     return False
 
 def benchmark(method, name, runs, input, k):
-    from datetime import datetime
-    start_time = datetime.now()
+    import time
+    current_micro_time = lambda: int(round(time.time() * 1000000))
+    start_time = current_micro_time()
     for i in range(0, runs):
         output=method(input, k)
-    time_elapsed = datetime.now() - start_time
+    time_elapsed = current_micro_time() - start_time
 
-    per_run = (time_elapsed.microseconds/(runs * 1.0))
+    per_run = (time_elapsed/(runs * 1.0))
     print str(name) + ": Per run: " + str(per_run) + "us"
 
     if output:

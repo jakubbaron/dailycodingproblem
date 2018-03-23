@@ -49,20 +49,21 @@ def o_one_space(in_array):
   return prod
 
 def benchmark(method, name, runs, in_array):
-  from datetime import datetime
-  start_time = datetime.now()
+  import time
+  current_micro_time = lambda: int(round(time.time() * 1000000))
+  start_time = current_micro_time()
   for i in range(0, runs):
     output = method(in_array)
-  time_elapsed = datetime.now() - start_time
+  time_elapsed = current_micro_time() - start_time
 
   print str(name) + ": Output:" + str(output)
-  per_run = (time_elapsed.microseconds/(runs * 1.0))
+  per_run = (time_elapsed/(runs * 1.0))
   print str(name) + ": Per run: " + str(per_run) + "us"
 
 
 def main():
   in_array = [1, 2, 3, 4, 5]
-  runs = 10
+  runs = 1000
   benchmark(dividing, "With Division", runs, in_array)
   benchmark(no_dividing, "Without Division", runs, in_array)
   benchmark(o_one_space, "Without Division one_space", runs, in_array)
