@@ -64,5 +64,13 @@ def main():
   expected = 3
   benchmark(find_missing_positive_integer, "Find missing positive integer", runs, in_array, expected)
 
+  in_array = [-1, -2, -3, -4, -5, -6, -7, -8]
+  expected = 1
+  benchmark(find_missing_positive_integer, "Find missing positive integer", runs, in_array, expected)
+
+  in_array = [0] * 100
+  expected = 1
+  benchmark(find_missing_positive_integer, "Find missing positive integer", runs, in_array, expected)
+
 if __name__ == "__main__":
   main()
