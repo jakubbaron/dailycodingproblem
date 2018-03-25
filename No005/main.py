@@ -15,7 +15,7 @@ def cons(a, b):
   return lambda f: f(a, b)
 
 def car(pair):
-  return pair(lambda p, q: p)
+  return pair(lambda p, q: p) #Adding source: https://stackoverflow.com/a/32293382/4241944
 
 def cdr(pair):
   return pair(lambda p, q: q)
