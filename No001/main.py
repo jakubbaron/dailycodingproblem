@@ -22,9 +22,6 @@ def one_go(input, k):
     if copy_input[i] > k:
         return False
 
-    while j > 0 and copy_input[j] > k:
-        j -= 1
-
     while i < j:
         added = copy_input[i] + copy_input[j]
         if added == k:
