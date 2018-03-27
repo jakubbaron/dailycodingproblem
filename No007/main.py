@@ -37,49 +37,22 @@ arr['24']  = 'x'
 arr['25']  = 'y'
 arr['26']  = 'z'
 
-def decode_next(msg, current_word):
-  print 'msg: ' + str(msg) + ' current word: ' + str(current_word)
+def decode_ways(msg, current_word=""):
+  output = []
   if len(msg) == 0:
-    return ''
-  if len(msg) == 1 and msg[0] == '0':
-    return 'NOPENOPE' #invalid
-  if msg[0] != '0':
-    current_word += arr[msg[0]]
-    decode_next(msg[1:], current_word)
-  if len(msg) > 2 and msg[:2] in arr:
-    print "Decoding: " + str(msg[:2])
-    current_word += arr[msg[:2]]
-    decode_next(msg[2:], current_word)
-  print current_word
-
-def try_2(msg, current_word, results):
-  #print 'msg: ' + str(msg) + ' current dict: ' + str(current_dict)
-  if len(msg) == 0:
-    results.append(current_word)
-    return
+    return [current_word]
   if len(msg) >= 1 and msg[0] in arr:
-    try_2(msg[1:], current_word + arr[msg[0]], results)
+    output.extend(decode_ways(msg[1:], current_word + arr[msg[0]]))
   if len(msg) >= 2 and msg[:2] in arr:
-    try_2(msg[2:], current_word + arr[msg[:2]], results)
-  return results
-
-
-def count_decode_ways(msg, currently_decoded, last_char):
-  print "Count decode ways for: " + str(msg)
-  print "Currently decoded: " + str(currently_decoded)
-  print "Last char: " + str(last_char)
-  if len(msg) == 0: #successfully decoded whole message
-    return currently_decoded
-  # if 0 is at the second char, this isn't valid, thus discard
-  decode_next(msg, "")
+    output.extend(decode_ways(msg[2:], current_word + arr[msg[:2]]))
+  return output
 
 def main():
   message = '111'
-  output = []
-  print "Results: " + str(try_2(message, "", output))
+  print "Results: " + str(decode_ways(message))
+
   message ='10202223'
-  output = []
-  print "Results: " + str(try_2(message, "", output))
+  print "Results: " + str(decode_ways(message))
 
 if __name__ == "__main__":
     main()
