@@ -49,10 +49,14 @@ def decode_ways(msg, current_word=""):
 
 def main():
   message = '111'
+  print "Message: " + str(message)
   print "Results: " + str(decode_ways(message))
+  print "Ways: " + str(len(decode_ways(message)))
 
   message ='10202223'
+  print "Message: " + str(message)
   print "Results: " + str(decode_ways(message))
+  print "Ways: " + str(len(decode_ways(message)))
 
 if __name__ == "__main__":
     main()
