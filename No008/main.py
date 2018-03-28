@@ -37,18 +37,11 @@ class Tree:
       self.right.walk()
 
 def is_unival(root, value):
+  if root is None:
+    return True
   if value != root.value:
     return False
-  if root.left is None and root.right is None:
-    return True
-
-  output = True
-  if root.left is not None:
-    output = output and is_unival(root.left, root.value)
-  if root.right is not None:
-    output = output and is_unival(root.right, root.value)
-
-  return output
+  return is_unival(root.left, value) and is_unival(root.right, value)
 
 def count_univals(root):
   if root is None:
