@@ -51,6 +51,25 @@ def count_univals(root):
   this_tree = is_unival(root, root.value)
   return left + right + this_tree
 
+def count_on(root):
+  count, _ = faster_helper(root)
+  return count
+
+# https://www.dailycodingproblem.com/blog/unival-trees/
+def faster_helper(root):
+  if root is None:
+    return 0, True
+  left_count, is_left_unival = faster_helper(root.left)
+  right_count, is_right_unival = faster_helper(root.right)
+  total_count = left_count + right_count
+
+  if is_left_unival and is_right_unival:
+    if root.left is not None and root.value != root.left.value:
+      return total_count, False
+    if root.right is not None and root.value != root.right.value:
+      return total_count, False
+    return total_count + 1, True
+  return total_count, False
 
 def main():
   nums = Tree(0)
@@ -62,6 +81,7 @@ def main():
   nums.right.left.insert_right(1)
   print "Found univals in nums: " + str(count_univals(nums))
   assert count_univals(nums) == 5
+  assert count_on(nums) == 5
 
   chars = Tree('a')
   chars.insert_left('c')
@@ -71,6 +91,7 @@ def main():
   chars.right.right.insert_right('b')
   print "Found univals in chars: " + str(count_univals(chars))
   assert count_univals(chars) == 5
+  assert count_on(chars) == 5
 
   As = Tree('a')
   As.insert_left('a')
@@ -80,6 +101,7 @@ def main():
   As.right.right.insert_right('A')
   print "Found univals in As: " + str(count_univals(As))
   assert count_univals(As) == 3
+  assert count_on(As) == 3
 
 
 if __name__ == "__main__":
