@@ -12,9 +12,9 @@ def benchmark(method, name, runs, input, k):
     print str(name) + ": Per run: " + str(per_run) + "us"
 
     if output:
-        print str(name) + ": Found a pair"
+        print str(name) + " output: " + str(output)
     else:
-        print str(name) + ": Pair not found"
+        print str(name) + " no output"
 
 
 def main():
