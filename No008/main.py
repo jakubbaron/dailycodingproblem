@@ -53,14 +53,34 @@ def count_univals(root):
 
 
 def main():
-  t = Tree(0)
-  t.insert_left(1)
-  t.insert_right(0)
-  t.right.insert_right(0)
-  t.right.insert_left(1)
-  t.right.left.insert_left(1)
-  t.right.left.insert_right(1)
-  print "Found univals: " + str(count_univals(t))
+  nums = Tree(0)
+  nums.insert_left(1)
+  nums.insert_right(0)
+  nums.right.insert_right(0)
+  nums.right.insert_left(1)
+  nums.right.left.insert_left(1)
+  nums.right.left.insert_right(1)
+  print "Found univals in nums: " + str(count_univals(nums))
+  assert count_univals(nums) == 5
+
+  chars = Tree('a')
+  chars.insert_left('c')
+  chars.insert_right('b')
+  chars.right.insert_left('b')
+  chars.right.insert_right('b')
+  chars.right.right.insert_right('b')
+  print "Found univals in chars: " + str(count_univals(chars))
+  assert count_univals(chars) == 5
+
+  As = Tree('a')
+  As.insert_left('a')
+  As.insert_right('a')
+  As.right.insert_left('a')
+  As.right.insert_right('a')
+  As.right.right.insert_right('A')
+  print "Found univals in As: " + str(count_univals(As))
+  assert count_univals(As) == 3
+
 
 if __name__ == "__main__":
     main()
