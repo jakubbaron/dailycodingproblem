@@ -50,6 +50,14 @@ def is_unival(root, value):
 
   return output
 
+def count_univals(root):
+  if root is None:
+    return 0
+  left = count_univals(root.left)
+  right = count_univals(root.right)
+  this_tree = is_unival(root, root.value)
+  return left + right + this_tree
+
 
 def main():
   t = Tree(0)
@@ -59,9 +67,7 @@ def main():
   t.right.insert_left(1)
   t.right.left.insert_left(1)
   t.right.left.insert_right(1)
-
-  print str(is_unival(t.right.left, 1))
-  print str(is_unival(t.right.right, 0))
+  print "Found univals: " + str(count_univals(t))
 
 if __name__ == "__main__":
     main()
