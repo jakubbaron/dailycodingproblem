@@ -35,5 +35,9 @@ def main():
   print "Sum: " + str(largest_non_consecutive_sum(arr))
   assert (largest_non_consecutive_sum(arr) == 5)
 
+  arr = [4, 1, 1, 4, 2, 1]
+  print "Sum: " + str(largest_non_consecutive_sum(arr))
+  assert (largest_non_consecutive_sum(arr) == 9)
+
 if __name__ == "__main__":
     main()
