@@ -11,12 +11,29 @@
 #
 # Follow-up: Can you do this in O(N) time and constant space?
 
-def brute_force:w(arr):
-  pass
+def largest_non_consecutive_sum(arr):
+  l = len(arr)
+  incl = arr[0]
+  excl = 0
+  for i in range(1, l):
+    temp = incl
+    incl = max(excl + arr[i], incl)
+    excl = temp
+
+  return incl
+
 def main():
   arr = [2, 4, 6 ,8]
+  print "Sum: " + str(largest_non_consecutive_sum(arr))
+  assert (largest_non_consecutive_sum(arr) == 12)
 
   arr = [5, 1, 1, 5]
+  print "Sum: " + str(largest_non_consecutive_sum(arr))
+  assert (largest_non_consecutive_sum(arr) == 10)
+
+  arr = [1, 2, -5, 3, -5, -5, -5, -5]
+  print "Sum: " + str(largest_non_consecutive_sum(arr))
+  assert (largest_non_consecutive_sum(arr) == 5)
 
 if __name__ == "__main__":
     main()
