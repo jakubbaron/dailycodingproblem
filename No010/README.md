@@ -1,9 +1,11 @@
 ### Disclaimer
 This is not a precise scheduler, it's supposed to run tasks after a certain amount of milliseconds.</br>
 It doesn't guarantee exact time of the run, can be +/- 10ms apparently(because of the sleep precision)
+
+### How to run
 python main.py
 
-###Example output: </br>
+### Example output:
 1522492604600591 Scheduling a task to be run at: 1522492605600587 </br>
 Running Hello World at: 1522492605600622 </br>
 Hello world </br>
