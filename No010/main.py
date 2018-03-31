@@ -54,7 +54,7 @@ class Scheduler(threading.Thread):
     time_to_run_at = current_micros_time() + n * 1000
     print str(current_micros_time()) + " Scheduling a task to be run at: " + str(time_to_run_at)
     task = Task(entry, time_to_run_at)
-    #this should have some mutex so we don't pop and add at the same time
+
     self.mutex.acquire()
     heapq.heappush(self.queue, task)
     self.mutex.release()
@@ -80,4 +80,4 @@ def main():
   s.join()
 
 if __name__ == "__main__":
-    main()
+  main()
