@@ -7,7 +7,10 @@
 # and calls f after n milliseconds.
 
 import heapq
+from Queue import PriorityQueue
 import time
+import threading
+
 current_micros_time = lambda: int(round(time.time() * 1000000))
 
 class Task:
@@ -22,36 +25,55 @@ class Task:
   def __lt__(self, other):
     return self.micros < other.micros
 
-class Scheduler:
+class Scheduler(threading.Thread):
   def __init__(self):
-    self.pqueue = []
-    pass
+    self.queue = []
+    self.run_scheduler = True
+    super(Scheduler, self).__init__()
+
+  def toggle_run_scheduler(self):
+    self.run_scheduler = not self.run_scheduler
+    if self.run_scheduler:
+      self.run()
+
+  def run(self):
+    while self.run_scheduler:
+      if not self.queue:
+        time.sleep(0.0001) #sleep 100 microseconds
+        continue
+      if current_micros_time() >= self.queue[0].micros: #What if there are more tasks that were to be run now?
+        while self.queue and current_micros_time() >= self.queue[0].micros:
+          next_task = heapq.heappop(self.queue)
+          next_task.run()
+      time.sleep(0.0001) #sleep 100 microseconds
+    print "Scheduler has been stopped"
+
   def schedule(self, entry, n):
     time_to_run_at = current_micros_time() + n * 1000
     print str(current_micros_time()) + " Scheduling a task to be run at: " + str(time_to_run_at)
     task = Task(entry, time_to_run_at)
-    heapq.heappush(self.pqueue, task)
-    # Below should be invoked in a separate thread, which would check the queue
-    # each 100 micro seconds or so and run the tasks when appropriate
-    self.run()
-
-  def run(self):
-    next_task = heapq.heappop(self.pqueue)
-    while self.pqueue or next_task is not None:
-      if current_micros_time() >= next_task.micros:
-        print "Running task at: " + str(current_micros_time())
-        next_task.run()
-        next_task = None
-    print "All tasks finished"
+    #this should have some mutex so we don't pop and add at the same time
+    heapq.heappush(self.queue, task)
 
 def hello_world():
   print "Running Hello World at: " + str(current_micros_time())
   print "Hello world"
 
+def hello_world2():
+  print "Running Hello World 2 at: " + str(current_micros_time())
+  print "Hello world 2"
+
 def main():
   s = Scheduler()
+  s.start()
   s.schedule(hello_world, 1000)
-  pass
+  time.sleep(2)
+  s.schedule(hello_world2, 500)
+  s.schedule(hello_world2, 5000)
+  s.schedule(hello_world, 1000)
+  time.sleep(10)
+  s.toggle_run_scheduler()
+  s.join()
 
 if __name__ == "__main__":
     main()
