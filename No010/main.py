@@ -7,7 +7,6 @@
 # and calls f after n milliseconds.
 
 import heapq
-from Queue import PriorityQueue
 import time
 import threading
 
@@ -28,6 +27,7 @@ class Task:
 class Scheduler(threading.Thread):
   def __init__(self):
     self.queue = []
+    self.mutex = threading.Lock()
     self.run_scheduler = True
     super(Scheduler, self).__init__()
 
@@ -43,8 +43,10 @@ class Scheduler(threading.Thread):
         continue
       if current_micros_time() >= self.queue[0].micros: #What if there are more tasks that were to be run now?
         while self.queue and current_micros_time() >= self.queue[0].micros:
+          self.mutex.acquire()
           next_task = heapq.heappop(self.queue)
           next_task.run()
+          self.mutex.release()
       time.sleep(0.0001) #sleep 100 microseconds
     print "Scheduler has been stopped"
 
@@ -53,7 +55,9 @@ class Scheduler(threading.Thread):
     print str(current_micros_time()) + " Scheduling a task to be run at: " + str(time_to_run_at)
     task = Task(entry, time_to_run_at)
     #this should have some mutex so we don't pop and add at the same time
+    self.mutex.acquire()
     heapq.heappush(self.queue, task)
+    self.mutex.release()
 
 def hello_world():
   print "Running Hello World at: " + str(current_micros_time())
