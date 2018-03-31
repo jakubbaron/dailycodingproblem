@@ -14,8 +14,23 @@
 # structure to speed up queries.
 
 class DictionaryAutocomplete:
-  def __init(this, arr):
+  def __init__(this):
+    this.autocompletes = {}
     pass
+  def add_autocomplete(this, ac):
+    if ac.char is None:
+      print "Cannot add empty Autocomplete"
+      return
+    this.autocompletes[ac.char] = ac
+  def autocomplete(this, query):
+    if len(query) == 0:
+      print "Provided empty string"
+      return
+    char = query[0]
+    if char not in this.autocompletes.keys():
+      return []
+
+    return this.autocompletes[char].autocomplete(query)
 
 #This class assumes that words have been filtered out and that
 # they all begin with the same character
@@ -26,14 +41,14 @@ class Autocomplete:
     this.full_word = False
     if arr is not None:
       for item in arr:
-        this.add_node(item)
+        this.add_word(item)
 
-  def add_node(this, word):
+  def add_word(this, word):
     if len(word) == 0:
       return
     char = word[0]
 
-    #First added node
+    #First added word
     if this.char is None:
       this.char = char
 
@@ -50,8 +65,8 @@ class Autocomplete:
     if char not in this.children.keys():
       #print "New autocomplete for: " + str(char) + " this char: " + str(this.char)
       this.children[char] = Autocomplete()
-    #print "Invoking add_node: " + str(word[1:])
-    this.children[char].add_node(word[1:])
+    #print "Invoking add_word: " + str(word[1:])
+    this.children[char].add_word(word[1:])
 
   def get_words(this):
     out = []
@@ -64,15 +79,33 @@ class Autocomplete:
     return out
 
   def autocomplete(this, query):
+    out = []
     if len(query) == 0:
-      return []
+      return out
+    elif len(query) == 1:
+      char = query[0]
+      if char == this.char:
+        return [str(w) for w in this.get_words()]
+    elif len(query) > 1:
+      char = query[1]
+      if char in this.children.keys():
+        words = [str(query[0]) + str(w) for w in this.children[char].autocomplete(query[1:])]
+        out.extend(words)
 
-    pass
+    return out
+
 def main():
   arr = ['dog', 'deer', 'deal']
   autocomplete = Autocomplete(arr)
+  autocomplete.add_word('dandruf')
+  autocomplete.add_word('drone')
   query = 'de'
   print str(autocomplete.get_words())
+  print str(autocomplete.autocomplete(query))
+  assert ['deal', 'deer'] == autocomplete.autocomplete('de')
+  dc = DictionaryAutocomplete()
+  dc.add_autocomplete(autocomplete)
+  assert ['deal', 'deer'] == dc.autocomplete('de')
 
 if __name__ == "__main__":
   main()
