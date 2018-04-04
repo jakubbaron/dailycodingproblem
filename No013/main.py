@@ -22,17 +22,22 @@ def find_longest_substring(string, number_of_distinct_characters):
     if len(characters) > number_of_distinct_characters:
       first_char_idx = indices.popleft()
       characters.popleft()
+      last_char_idx = i - 1
     else:
       first_char_idx = indices[0]
+      last_char_idx = i
 
-    if (i - 1) - first_char_idx > end - start:
-      start, end = first_char_idx, i - 1
+    if (last_char_idx) - first_char_idx > end - start:
+      start, end = first_char_idx, last_char_idx
 
   return string[start:end+1]
 
 def main():
-  print str(find_longest_substring("abcba", 2))
   assert find_longest_substring("abcba", 2) == "bcb"
+  assert find_longest_substring("aaa", 2) == "aaa"
+  assert find_longest_substring("aaabbbbbbbbbcdcdcdcdcdcdcdcdc", 2) == "cdcdcdcdcdcdcdcdc"
+  assert find_longest_substring("aaabbbbbbbbbcdcdcdcdcdcdcdcdc", 4) == "aaabbbbbbbbbcdcdcdcdcdcdcdcdc"
+  assert find_longest_substring("aaabbbbbbbbbcdcdcdcdcdcdcdcdc", 3) == "bbbbbbbbbcdcdcdcdcdcdcdcdc"
 
 if __name__ == "__main__":
   main()
