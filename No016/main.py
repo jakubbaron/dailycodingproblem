@@ -31,7 +31,7 @@ class LastLogs:
     return this.__log[this.__current_id - i]
 
 def main():
-  l = LastLogs(5)
+  l = LastLogs(max_size = 5)
   l.record(1)
   l.record(2)
   l.record(3)
