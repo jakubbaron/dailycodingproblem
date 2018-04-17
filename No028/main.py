@@ -38,23 +38,22 @@ def justify(arr, k):
       result.append(' '.join(current_line))
       current_line = []
       current_line_length = 0
+      continue
 
     elif current_line_length + word_len > k:
       number_of_extra_spaces = k - current_line_length + 1
-      number_of_words = len(current_line)
-      spaces_per_word = number_of_extra_spaces / (number_of_words - 1)
-      for i in range(0, number_of_words - 1):
+      number_of_words = len(current_line) - 1
+      spaces_per_word = number_of_extra_spaces / (number_of_words)
+      for i in range(0, number_of_words):
         current_line[i] += spaces_per_word * ' '
-      for i in range(0, number_of_extra_spaces % (number_of_words-1)):
+      for i in range(0, number_of_extra_spaces % (number_of_words)):
         current_line[i] += ' '
       result.append(' '.join(current_line))
-      current_line_length = word_len + 1
+      current_line_length = 0
       current_line = []
-      current_line.append(word)
 
-    else:
-      current_line.append(word)
-      current_line_length += word_len + 1
+    current_line.append(word)
+    current_line_length += word_len + 1
 
   if len(current_line) == 1:
     result.append(current_line[0] + ((k - current_line_length + 1) * ' '))
@@ -64,11 +63,11 @@ def justify(arr, k):
 
   elif current_line_length < k:
     number_of_extra_spaces = k - current_line_length + 1
-    number_of_words = len(current_line)
-    spaces_per_word = number_of_extra_spaces / (number_of_words - 1)
-    for i in range(0, number_of_words - 1):
+    number_of_words = len(current_line) - 1
+    spaces_per_word = number_of_extra_spaces / (number_of_words)
+    for i in range(0, number_of_words):
       current_line[i] += spaces_per_word * ' '
-    for i in range(0, number_of_extra_spaces % (number_of_words - 1)):
+    for i in range(0, number_of_extra_spaces % (number_of_words)):
       current_line[i] += ' '
     result.append(' '.join(current_line))
 
