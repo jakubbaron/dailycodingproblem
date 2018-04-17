@@ -43,8 +43,9 @@ def justify(arr, k):
       number_of_extra_spaces = k - current_line_length + 1
       number_of_words = len(current_line)
       spaces_per_word = number_of_extra_spaces / (number_of_words - 1)
-      current_line = [s + spaces_per_word * ' ' for s in current_line]
-      for i in range(0, number_of_extra_spaces % number_of_words):
+      for i in range(0, number_of_words - 1):
+        current_line[i] += spaces_per_word * ' '
+      for i in range(0, number_of_extra_spaces % (number_of_words-1)):
         current_line[i] += ' '
       result.append(' '.join(current_line))
       current_line_length = word_len + 1
@@ -54,30 +55,31 @@ def justify(arr, k):
     else:
       current_line.append(word)
       current_line_length += word_len + 1
-      print "current line length:", current_line_length, "arr:", str(current_line)
 
   if len(current_line) == 1:
-    reult.append(current_line + (current_line_length * ' '))
+    result.append(current_line[0] + ((k - current_line_length + 1) * ' '))
   elif current_line_length == k:
+    current_line.append(word)
     result.append(' '.join(current_line))
+
   elif current_line_length < k:
     number_of_extra_spaces = k - current_line_length + 1
     number_of_words = len(current_line)
     spaces_per_word = number_of_extra_spaces / (number_of_words - 1)
-    print "spaces per word", spaces_per_word
-    print "words", number_of_words
-    print "extra spaces", number_of_extra_spaces
-    current_line = [s + spaces_per_word * ' ' for s in current_line]
-    for i in range(0, (number_of_extra_spaces - (spaces_per_word * (number_of_words - 1))) % (number_of_words - 1)):
+    for i in range(0, number_of_words - 1):
+      current_line[i] += spaces_per_word * ' '
+    for i in range(0, number_of_extra_spaces % (number_of_words - 1)):
       current_line[i] += ' '
     result.append(' '.join(current_line))
 
-  print result
   return result
 
 def main():
- arr = ["the", "quick", "brown", "fox", "jumps", "over", "the", "lazy", "dog"]
  k = 16
+ result = justify(["abc"], k)
+ assert result[0] == "abc             "
+
+ arr = ["the", "quick", "brown", "fox", "jumps", "over", "the", "lazy", "dog"]
  result = justify(arr, k)
  assert len(result) == 3
  assert result[0] == "the  quick brown"
